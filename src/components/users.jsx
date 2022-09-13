@@ -4,13 +4,11 @@ import "bootstrap/dist/css/bootstrap.css";
 const Users = () => {
     const [users, setUsers] = useState(api.users.fetchAll());
     const handleDelete = (userId) => {
-        setUsers((prevState) => {
-            prevState.filter((item) => item.name !== userId);
-        })
+        setUsers((prevState) => prevState.filter((item) => item.name !== userId))
     };
     const renderList = (num) => {
         return (
-            <button type="button" class="btn btn-danger" onClick={handleDelete(users[num].name)}>
+            <button type="button" class="btn btn-danger" onClick={() => handleDelete(users[num].name)}>
                 delete
             </button>
         )
