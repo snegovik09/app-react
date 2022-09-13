@@ -6,34 +6,42 @@ const Users = () => {
     const handleDelete = (userId) => {
         
     };
-    const renderPhrase = (number) => {console.log(2)};
-    // users.forEach((item, i) => console.log(i))
-
+    const renderPhrase = (number) => {
+        let line = "";
+        if (users.length === 0) {
+            return line = `Никто с тобой не тусанет`;
+        } else if (users.length === 1 || (users.length > 4 && users.length < 13)) {
+            return  line = `${users.length} человек тусанет с тобой сегодня`;
+        } else if (users.length >= 2 && users.length <= 4) {
+            return  line = `${users.length} человека тусанут с тобой сегодня`;
+        }
+    }
     const changeColors = (value) => {
         return "badge bg-" + value + " mx-1";
     };
     const getQualitie = (num) => {
         return (users[num].qualities.map((qualitie) => (
-            <span class={changeColors(qualitie.color)}>{qualitie.name}</span>
+            <span key={qualitie.name} class={changeColors(qualitie.color)}>{qualitie.name}</span>
         )))
     };
     const renderRow = (num) => {
         return (
             <>
-                <tr>
-                    <td>{users[num].name}</td>
-                    <td>{getQualitie(num)}</td>
-                    <td>{users[num].profession.name}</td>
-                    <td>{users[num].completedMeetings}</td>
-                    <td>{users[num].rate}/5</td>
-                    <td></td>
+                <tr key={users[num].name}>
+                    <td key={users[num].name}>{users[num].name}</td>
+                    <td key="0">{getQualitie(num)}</td>
+                    <td key={users[num].profession.name}>{users[num].profession.name}</td>
+                    <td key={users[num].completedMeetings}>{users[num].completedMeetings}</td>
+                    <td key={users[num].rate}>{users[num].rate}/5</td>
+                    <td key="1"></td>
                 </tr>
             </>
         )
-    }
+    };
     
     return (
         <>
+            <h2><span class="badge bg-primary">{renderPhrase()}</span></h2>
             <table class="table">
                 <thead>
                     <tr>
