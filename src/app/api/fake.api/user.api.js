@@ -1,12 +1,5 @@
-export const professions = {
-    doctor: { _id: "67rdca3eeb7f6fgeed471818", name: "Доктор" },
-    waiter: { _id: "67rdca3eeb7f6fgeed471820", name: "Официант" },
-    physics: { _id: "67rdca3eeb7f6fgeed471814", name: "Физик" },
-    engineer: { _id: "67rdca3eeb7f6fgeed471822", name: "Инженер" },
-    actor: { _id: "67rdca3eeb7f6fgeed471824", name: "Актер" },
-    cook: { _id: "67rdca3eeb7f6fgeed471829", name: "Повар" }
-};
-export const qualities = {
+import { professions } from "./professions.api";
+const qualities = {
     tedious: {
         _id: "67rdca3eeb7f6fgeed471198",
         name: "Нудила",
@@ -39,11 +32,23 @@ export const qualities = {
     }
 };
 
+const checkType = (id) => {
+    if (Array.isArray(professions)) {
+        return professions.filter((item) => {
+            return item._id === id;
+        })[0];
+    } else {
+        return Object.values(professions).filter((item) => {
+            return item._id === id;
+        })[0];
+    }
+};
+
 const users = [
     {
         _id: "67rdca3eeb7f6fgeed471815",
         name: "Джон Дориан",
-        profession: professions.doctor,
+        profession: checkType("67rdca3eeb7f6fgeed471818"),
         qualities: [qualities.tedious, qualities.uncertain, qualities.strange],
         completedMeetings: 36,
         rate: 2.5,
@@ -52,7 +57,7 @@ const users = [
     {
         _id: "67rdca3eeb7f6fgeed471816",
         name: "Кокс",
-        profession: professions.doctor,
+        profession: checkType("67rdca3eeb7f6fgeed471818"),
         qualities: [qualities.buller, qualities.handsome, qualities.alcoholic],
         completedMeetings: 15,
         rate: 2.5,
@@ -61,7 +66,7 @@ const users = [
     {
         _id: "67rdca3eeb7f6fgeed471817",
         name: "Боб Келсо",
-        profession: professions.doctor,
+        profession: checkType("67rdca3eeb7f6fgeed471818"),
         qualities: [qualities.buller],
         completedMeetings: 247,
         rate: 3.5,
@@ -70,7 +75,7 @@ const users = [
     {
         _id: "67rdca3eeb7f6fgeed471818",
         name: "Рэйчел Грин",
-        profession: professions.waiter,
+        profession: checkType("67rdca3eeb7f6fgeed471820"),
         qualities: [qualities.uncertain],
         completedMeetings: 148,
         rate: 3.5,
@@ -79,7 +84,7 @@ const users = [
     {
         _id: "67rdca3eeb7f6fgeed471819",
         name: "Шелдон Купер",
-        profession: professions.physics,
+        profession: checkType("67rdca3eeb7f6fgeed471814"),
         qualities: [qualities.strange, qualities.tedious],
         completedMeetings: 37,
         rate: 4.6,
@@ -88,7 +93,7 @@ const users = [
     {
         _id: "67rdca3eeb7f6fgeed471820",
         name: "Леонард Хофстедтер",
-        profession: professions.physics,
+        profession: checkType("67rdca3eeb7f6fgeed471814"),
         qualities: [qualities.strange, qualities.uncertain],
         completedMeetings: 147,
         rate: 3.5,
@@ -97,7 +102,7 @@ const users = [
     {
         _id: "67rdca3eeb7f6fgeed471821",
         name: "Говард Воловиц",
-        profession: professions.engineer,
+        profession: checkType("67rdca3eeb7f6fgeed471822"),
         qualities: [qualities.strange, qualities.tedious],
         completedMeetings: 72,
         rate: 3.5,
@@ -106,7 +111,7 @@ const users = [
     {
         _id: "67rdca3eeb7f6fgeed471822",
         name: "Никола Тесла",
-        profession: professions.engineer,
+        profession: checkType("67rdca3eeb7f6fgeed471822"),
         qualities: [qualities.handsome],
         completedMeetings: 72,
         rate: 5,
@@ -115,7 +120,7 @@ const users = [
     {
         _id: "67rdca3eeb7f6fgeed471823",
         name: "Моника Геллер",
-        profession: professions.cook,
+        profession: checkType("67rdca3eeb7f6fgeed471829"),
         qualities: [qualities.strange, qualities.uncertain],
         completedMeetings: 17,
         rate: 4.5,
@@ -124,7 +129,7 @@ const users = [
     {
         _id: "67rdca3eeb7f6fgeed471824",
         name: "Рататуй",
-        profession: professions.cook,
+        profession: checkType("67rdca3eeb7f6fgeed471829"),
         qualities: [qualities.handsome, qualities.buller],
         completedMeetings: 17,
         rate: 4.5,
@@ -133,7 +138,7 @@ const users = [
     {
         _id: "67rdca3eeb7f6fgeed47181f",
         name: "Джоуи Триббиани",
-        profession: professions.actor,
+        profession: checkType("67rdca3eeb7f6fgeed471824"),
         qualities: [qualities.uncertain, qualities.strange],
         completedMeetings: 434,
         rate: 3.5,
@@ -142,13 +147,21 @@ const users = [
     {
         _id: "67rdca3eeb7f6fgeed47181r",
         name: "Брэд Питт",
-        profession: professions.actor,
+        profession: checkType("67rdca3eeb7f6fgeed471824"),
         qualities: [qualities.handsome],
         completedMeetings: 434,
         rate: 5,
         bookmark: false
     }
 ];
-export function fetchAll() {
-    return users;
-}
+
+const fetchAllUsers = () =>
+    new Promise((resolve) => {
+        window.setTimeout(function () {
+            resolve(users);
+        }, 2000);
+    });
+
+export default {
+    fetchAllUsers
+};
