@@ -2,13 +2,23 @@ import React from "react";
 import PropTypes from "prop-types";
 const TableHeader = ({ onSort, selectedSort, columns }) => {
     const handleSort = (item) => {
-        if (selectedSort.path === item) {
+        if (selectedSort.path === item.path) {
             onSort({
                 ...selectedSort,
                 order: selectedSort.order === "asc" ? "desc" : "asc"
             });
         } else {
-            onSort({ path: item, order: "asc" });
+            onSort({ path: item.path, order: "asc" });
+        }
+    };
+    const addArr = (item) => {
+        if (selectedSort.path === item.path) {
+            if (selectedSort.order === "asc") {
+                return <i className="bi bi-caret-up-fill"></i>;
+            }
+            if (selectedSort.order === "desc") {
+                return <i className="bi bi-caret-down-fill"></i>;
+            }
         }
     };
     return (
@@ -19,30 +29,16 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
                         key={column}
                         onClick={
                             columns[column].path
-                                ? () => handleSort(columns[column].path)
+                                ? () => handleSort(columns[column])
                                 : undefined
                         }
                         scope="col"
                         {...{ role: columns[column].path && "button" }}
                     >
                         {columns[column].name}
+                        {addArr(columns[column])}
                     </th>
                 ))}
-
-                {/* <th scope="col">Качества</th>
-                <th onClick={() => handleSort("profession.name")} scope="col">
-                    Профессия
-                </th>
-                <th onClick={() => handleSort("completedMeetings")} scope="col">
-                    Встретился, раз
-                </th>
-                <th onClick={() => handleSort("rate")} scope="col">
-                    Оценка
-                </th>
-                <th onClick={() => handleSort("bookmark")} scope="col">
-                    Избранное
-                </th>
-                <th /> */}
             </tr>
         </thead>
     );
