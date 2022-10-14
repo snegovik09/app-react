@@ -12,7 +12,7 @@ const Users = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
-    const [sortBy, setSortBy] = useState({ name: "name", order: "" });
+    const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const pageSize = 8;
     const [users, setUsers] = useState();
     useEffect(() => {

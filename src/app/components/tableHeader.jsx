@@ -19,7 +19,7 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
             if (selectedSort.order === "desc") {
                 return <i className="bi bi-caret-down-fill"></i>;
             }
-        }
+        } else return null
     };
     return (
         <thead>
