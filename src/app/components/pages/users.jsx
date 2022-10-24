@@ -7,7 +7,6 @@ import api from "../../api";
 import SearchStatus from "../searchStatus";
 import UserTable from "../usersTable";
 import _ from "lodash";
-import { Link } from "react-router-dom";
 
 const Users = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -17,9 +16,7 @@ const Users = () => {
     const pageSize = 8;
     const [users, setUsers] = useState();
     useEffect(() => {
-        api.users
-            .fetchAllUsers()
-            .then((data) => setUsers(data));
+        api.users.fetchAllUsers().then((data) => setUsers(data));
     }, []);
 
     const handleDelete = (userId) =>
@@ -57,10 +54,10 @@ const Users = () => {
     if (users) {
         const filteredUsers = selectedProf
             ? users.filter(
-                  (user) =>
-                      JSON.stringify(user.profession) ===
-                      JSON.stringify(selectedProf)
-              )
+                (user) =>
+                    JSON.stringify(user.profession) ===
+                    JSON.stringify(selectedProf)
+            )
             : users;
         const count = filteredUsers.length;
         const sortedUsers = _.orderBy(

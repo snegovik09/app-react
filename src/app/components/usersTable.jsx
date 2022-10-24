@@ -13,9 +13,12 @@ const UserTable = ({
     onDelete
 }) => {
     const columns = {
-        name: {name: "Имя", 
-        component: (user) => <Link to={`users/${user._id}`}>{user.name}</Link>,
-        path:"name"
+        name: {
+            name: "Имя",
+            component: (user) => (
+                <Link to={`users/${user._id}`}>{user.name}</Link>
+            ),
+            path: "name"
         },
         qualities: {
             name: "Качества",

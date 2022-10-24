@@ -3,8 +3,9 @@ import { useHistory } from "react-router-dom";
 import api from "../api";
 import QualitiesList from "./qualitiesList";
 import _ from "lodash";
+import PropTypes from "prop-types";
 
-const UserPage = ({userId}) => {
+const UserPage = ({ userId }) => {
     const history = useHistory();
     const [user, setUser] = useState();
     const handleAllUsers = () => {
@@ -28,4 +29,7 @@ const UserPage = ({userId}) => {
     return <h1>loading</h1>;
 };
 
+UserPage.propTypes = {
+    userId: PropTypes.string
+};
 export default UserPage;
