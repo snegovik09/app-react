@@ -1,8 +1,8 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import Main from "./components/main";
+import Main from "./components/pages/main";
 import Navigation from "./components/navigation";
-import Login from "./components/login";
+import Login from "./components/pages/login";
 import CheckUsers from "./components/checkUsers";
 
 const App = () => {
@@ -10,9 +10,9 @@ const App = () => {
         <div>
             {<Navigation />}
             <Switch>
-                <Route exact path="/" component={Main} />
-                <Route path="/login" component={Login} />
-                <Route path={"/users"} component={CheckUsers} />
+                <Route exact path={"/"} component={Main} />
+                <Route path={"/login"} component={Login} />
+                <Route path={"/users/:userId?"} component={CheckUsers} />
             </Switch>
         </div>
     );

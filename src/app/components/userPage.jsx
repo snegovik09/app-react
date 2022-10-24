@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import api from "../api";
 import QualitiesList from "./qualitiesList";
 import _ from "lodash";
 
-const CheckId = () => {
-    const params = useParams();
+const UserPage = ({userId}) => {
     const history = useHistory();
-    const { id } = params;
     const [user, setUser] = useState();
     const handleAllUsers = () => {
         history.replace("/users");
     };
     useEffect(() => {
-        api.users.getById(id).then((data) => setUser(data));
+        api.users.getById(userId).then((data) => setUser(data));
     }, []);
     if (user) {
         return (
@@ -30,4 +28,4 @@ const CheckId = () => {
     return <h1>loading</h1>;
 };
 
-export default CheckId;
+export default UserPage;

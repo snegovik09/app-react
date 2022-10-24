@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import Pagination from "./pagination";
-import { paginate } from "../utils/paginate";
+import Pagination from "../pagination";
+import { paginate } from "../../utils/paginate";
 import PropTypes from "prop-types";
-import GroupList from "./groupList";
-import api from "../api";
-import SearchStatus from "./searchStatus";
-import UserTable from "./usersTable";
+import GroupList from "../groupList";
+import api from "../../api";
+import SearchStatus from "../searchStatus";
+import UserTable from "../usersTable";
 import _ from "lodash";
 import { Link } from "react-router-dom";
 
@@ -16,16 +16,10 @@ const Users = () => {
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const pageSize = 8;
     const [users, setUsers] = useState();
-    const ChangeNameToLink = (users) => {
-        return users.map((user) => {
-            user.name = <Link to={`users/${user._id}`}>{user.name}</Link>;
-            return user;
-        });
-    };
     useEffect(() => {
         api.users
             .fetchAllUsers()
-            .then((data) => setUsers(ChangeNameToLink(data)));
+            .then((data) => setUsers(data));
     }, []);
 
     const handleDelete = (userId) =>

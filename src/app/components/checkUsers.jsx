@@ -1,16 +1,10 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
-import Users from "./users";
-import CheckId from "./checkId";
-const Check = () => {
-    return (
-        <div>
-            <Switch>
-                <Route exact path={`/users`} component={Users} />
-                <Route path={`/users/:id?`} component={CheckId} />
-            </Switch>
-        </div>
-    );
+import { useParams } from "react-router-dom";
+import Users from "./pages/users";
+import UserPage from "./userPage";
+const CheckUsers = () => {
+    const {userId} = useParams();
+    return userId ? <UserPage userId={userId} /> : <Users />
 };
 
-export default Check;
+export default CheckUsers;
