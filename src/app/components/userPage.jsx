@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 const UserPage = ({ userId }) => {
     const history = useHistory();
     const [user, setUser] = useState();
-    const handleAllUsers = () => {
+    const handleClick = () => {
         history.replace("/users");
     };
     useEffect(() => {
@@ -22,7 +22,7 @@ const UserPage = ({ userId }) => {
                 {<QualitiesList qualities={user.qualities} />}
                 <div>{`completedMeetings: ${user.completedMeetings}`}</div>
                 <h2>{`Rate: ${user.rate}`}</h2>
-                <button onClick={handleAllUsers}>Все пользователи</button>
+                <button onClick={handleClick}>Все пользователи</button>
             </>
         );
     }
@@ -30,6 +30,6 @@ const UserPage = ({ userId }) => {
 };
 
 UserPage.propTypes = {
-    userId: PropTypes.string
+    userId: PropTypes.string.isRequired
 };
 export default UserPage;

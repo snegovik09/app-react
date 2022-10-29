@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
-import Pagination from "../pagination";
-import { paginate } from "../../utils/paginate";
+import Pagination from "./pagination";
+import { paginate } from "../utils/paginate";
 import PropTypes from "prop-types";
-import GroupList from "../groupList";
-import api from "../../api";
-import SearchStatus from "../searchStatus";
-import UserTable from "../usersTable";
+import GroupList from "./groupList";
+import api from "../api";
+import SearchStatus from "./searchStatus";
+import UserTable from "./usersTable";
 import _ from "lodash";
+import SearchUser from "./searchUser";
 
-const Users = () => {
+const UsersList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
+    // Новый хук изменения состояния для строки поиска
+    const [findUser, setFindUser] = useState("");
+
     const pageSize = 8;
     const [users, setUsers] = useState();
     useEffect(() => {
@@ -36,13 +40,17 @@ const Users = () => {
             .fetchAllProfessions()
             .then((data) => setProfessions(data));
     }, []);
+
+    // Добавляем в useEffect стирание в строке поиска при выборе поиска определенной профессии
     useEffect(() => {
         setCurrentPage(1);
+        if (selectedProf) {
+            setFindUser("");
+        }
     }, [selectedProf]);
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
     };
-
     const handleSort = (item) => {
         setSortBy(item);
     };
@@ -50,15 +58,26 @@ const Users = () => {
     const handleProfessionSelect = (item) => {
         setSelectedProf(item);
     };
-
     if (users) {
+        // Добавляем изменение при вводе строки
+        const handleSearchUser = (e) => {
+            setFindUser(e.target.value);
+            setSelectedProf();
+        };
         const filteredUsers = selectedProf
             ? users.filter(
                 (user) =>
                     JSON.stringify(user.profession) ===
                     JSON.stringify(selectedProf)
             )
-            : users;
+            // Дополнительный тернарный оператор для сравнения пользователей посимвольно
+            : findUser !== ""
+                ? users.filter(
+                    (user) =>
+                        user.name.toLowerCase().indexOf(findUser.toLowerCase()) >
+                        -1
+                )
+                : users;
         const count = filteredUsers.length;
         const sortedUsers = _.orderBy(
             filteredUsers,
@@ -91,6 +110,13 @@ const Users = () => {
                     )}
                     <div className="d-flex flex-column">
                         <SearchStatus length={count} />
+
+                        {/* Новый компонент для строки поиска */}
+                        <SearchUser
+                            value={findUser}
+                            onChange={handleSearchUser}
+                        />
+
                         {count > 0 && (
                             <UserTable
                                 users={userCrop}
@@ -116,9 +142,9 @@ const Users = () => {
     return "loading";
 };
 
-Users.propTypes = {
+UsersList.propTypes = {
     users: PropTypes.array,
     count: PropTypes.number
 };
 
-export default Users;
+export default UsersList;
