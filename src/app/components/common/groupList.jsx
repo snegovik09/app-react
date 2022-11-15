@@ -9,7 +9,7 @@ const GroupList = ({
     selectedItem
 }) => {
     if (!Array.isArray(items)) {
-        Object.keys(items).map((item) => (
+        return Object.keys(items).map((item) => (
             <li
                 key={items[item][valueProperty]}
                 className={

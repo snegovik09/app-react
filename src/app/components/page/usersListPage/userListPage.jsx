@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from "react";
-import Pagination from "./pagination";
-import { paginate } from "../utils/paginate";
+import Pagination from "../../common/pagination";
+import { paginate } from "../../../utils/paginate";
 import PropTypes from "prop-types";
-import GroupList from "./groupList";
-import api from "../api";
-import SearchStatus from "./searchStatus";
-import UserTable from "./usersTable";
+import GroupList from "../../common/groupList";
+import api from "../../../api";
+import SearchStatus from "../../ui/searchStatus";
+import UserTable from "../../ui/usersTable";
 import _ from "lodash";
-import SearchUser from "./searchUser";
+import SearchUser from "../../common/form/searchUser";
 
-const UsersList = () => {
+const UsersListPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
-    // Новый хук изменения состояния для строки поиска
     const [findUser, setFindUser] = useState("");
 
     const pageSize = 8;
     const [users, setUsers] = useState();
     useEffect(() => {
-        api.users.fetchAllUsers().then((data) => setUsers(data));
+        api.users.fetchAll().then((data) => setUsers(data));
     }, []);
 
     const handleDelete = (userId) =>
@@ -36,12 +35,9 @@ const UsersList = () => {
         );
     };
     useEffect(() => {
-        api.professions
-            .fetchAllProfessions()
-            .then((data) => setProfessions(data));
+        api.professions.fetchAll().then((data) => setProfessions(data));
     }, []);
 
-    // Добавляем в useEffect стирание в строке поиска при выборе поиска определенной профессии
     useEffect(() => {
         setCurrentPage(1);
         if (selectedProf) {
@@ -59,25 +55,23 @@ const UsersList = () => {
         setSelectedProf(item);
     };
     if (users) {
-        // Добавляем изменение при вводе строки
         const handleSearchUser = (e) => {
             setFindUser(e.target.value);
             setSelectedProf();
         };
         const filteredUsers = selectedProf
             ? users.filter(
-                (user) =>
-                    JSON.stringify(user.profession) ===
-                    JSON.stringify(selectedProf)
-            )
-            // Дополнительный тернарный оператор для сравнения пользователей посимвольно
+                  (user) =>
+                      JSON.stringify(user.profession) ===
+                      JSON.stringify(selectedProf)
+              )
             : findUser !== ""
-                ? users.filter(
-                    (user) =>
-                        user.name.toLowerCase().indexOf(findUser.toLowerCase()) >
-                        -1
-                )
-                : users;
+            ? users.filter(
+                  (user) =>
+                      user.name.toLowerCase().indexOf(findUser.toLowerCase()) >
+                      -1
+              )
+            : users;
         const count = filteredUsers.length;
         const sortedUsers = _.orderBy(
             filteredUsers,
@@ -110,13 +104,10 @@ const UsersList = () => {
                     )}
                     <div className="d-flex flex-column">
                         <SearchStatus length={count} />
-
-                        {/* Новый компонент для строки поиска */}
                         <SearchUser
                             value={findUser}
                             onChange={handleSearchUser}
                         />
-
                         {count > 0 && (
                             <UserTable
                                 users={userCrop}
@@ -142,9 +133,9 @@ const UsersList = () => {
     return "loading";
 };
 
-UsersList.propTypes = {
+UsersListPage.propTypes = {
     users: PropTypes.array,
     count: PropTypes.number
 };
 
-export default UsersList;
+export default UsersListPage;
