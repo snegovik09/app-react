@@ -7,7 +7,8 @@ import RadioField from "../../common/form/radioField";
 import MultiSelectField from "../../common/form/multiSelectField";
 import { useParams, useHistory } from "react-router-dom";
 import _ from "lodash";
-import { validator } from "../../../utils/validator"
+import { validator } from "../../../utils/validator";
+import BackHistoryButton from "../../common/backButton";
 
 const EditUserPage = (userId) => {
     const params = useParams();
@@ -35,13 +36,13 @@ const EditUserPage = (userId) => {
                     profession: profession._id,
                     qualities: transform(qualities)
                 });
+                setLoader(true);
             });
 
-        setLoader(true);
         api.professions.fetchAll().then((data) => {
             const professionsList = Object.keys(data).map((professionName) => ({
-                label: data[professionName].name,
-                value: data[professionName]._id
+                name: data[professionName].name,
+                _id: data[professionName]._id
             }));
             setProfessions(professionsList);
         });
@@ -54,7 +55,7 @@ const EditUserPage = (userId) => {
             setQualities(qualitiesList);
         });
     }, []);
-    
+
     const validatorConfig = {
         name: {
             isRequired: {
@@ -107,11 +108,11 @@ const EditUserPage = (userId) => {
         const { profession, qualities } = data;
         api.users
             .update(params.userId, {
-                    ...data, 
-                    profession: getProfessionById(profession), 
-                    qualities: getQualities(qualities)
+                ...data,
+                profession: getProfessionById(profession),
+                qualities: getQualities(qualities)
             })
-                .then(() => history.goBack());
+            .then(() => history.goBack());
     };
     const getProfessionById = (id) => {
         for (const prof of professions) {
@@ -138,6 +139,7 @@ const EditUserPage = (userId) => {
     return (
         loader && (
             <div className="container mt-5">
+                <BackHistoryButton />
                 <div className="row">
                     <div className="col-md-6 offset-md-3 shadow p-4">
                         {loader && (
@@ -186,11 +188,11 @@ const EditUserPage = (userId) => {
                                     defaultValue={data.qualities}
                                 />
                                 <button
-                disabled={!isValid}
-                className="btn btn-primary w-100 mx-auto"
-            >
-                Submit
-            </button>
+                                    disabled={!isValid}
+                                    className="btn btn-primary w-100 mx-auto"
+                                >
+                                    Submit
+                                </button>
                             </form>
                         )}
                     </div>
