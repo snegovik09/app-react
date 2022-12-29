@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from "react";
-import TextField from "../common/form/textField";
+import React, { useEffect, useState } from "react";
 import { validator } from "../../utils/validator";
+import TextField from "../common/form/textField";
 import CheckBoxField from "../common/form/checkBoxField";
+import { useAuth } from "../../hooks/useAuth";
+import { useHistory } from "react-router-dom";
 
 const LoginForm = () => {
+    const history = useHistory();
+    const { signIn } = useAuth();
     const [data, setData] = useState({
         email: "",
         password: "",
@@ -11,12 +15,15 @@ const LoginForm = () => {
     });
     const [errors, setErrors] = useState({});
     const handleChange = (target) => {
-        setData((prevState) => ({ ...prevState, [target.name]: target.value }));
+        setData((prevState) => ({
+            ...prevState,
+            [target.name]: target.value
+        }));
     };
     const validatorConfig = {
         email: {
             isRequired: {
-                message: "Элетронная почта обязательна для заполнения"
+                message: "Электронная почта обязательна для заполнения"
             },
             isEmail: {
                 message: "Email введен некорректно"
@@ -27,10 +34,10 @@ const LoginForm = () => {
                 message: "Пароль обязателен для заполнения"
             },
             isCapitalSymbol: {
-                message: "Пароль должен сожержать хотя бы одну заглавную букву"
+                message: "Пароль должен содержать хотя бы одну заглавную букву"
             },
             isContainDigit: {
-                message: "Пароль должен сожержать хотя бы одно число"
+                message: "Пароль должен содержать хотя бы одно число"
             },
             min: {
                 message: "Пароль должен состоять минимум из 8 символов",
@@ -47,29 +54,33 @@ const LoginForm = () => {
         return Object.keys(errors).length === 0;
     };
     const isValid = Object.keys(errors).length === 0;
-    const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
-        console.log(data);
+        try {
+           await signIn(data);
+           history.push("/");
+        } catch (error) {
+            setErrors(error);
+        }
     };
     return (
         <form onSubmit={handleSubmit}>
             <TextField
-                label="Email"
-                id="email"
+                label="Электронная почта"
+                name="email"
                 value={data.email}
                 onChange={handleChange}
-                name="email"
                 error={errors.email}
             />
             <TextField
                 label="Пароль"
-                id="password"
                 type="password"
+                name="password"
                 value={data.password}
                 onChange={handleChange}
-                name="password"
                 error={errors.password}
             />
             <CheckBoxField
@@ -80,8 +91,9 @@ const LoginForm = () => {
                 Оставаться в системе
             </CheckBoxField>
             <button
-                disabled={!isValid}
                 className="btn btn-primary w-100 mx-auto"
+                type="submit"
+                disabled={!isValid}
             >
                 Submit
             </button>

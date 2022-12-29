@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
-import _ from "lodash";
-
 const UserCard = ({ user }) => {
     const history = useHistory();
     const handleClick = () => {
@@ -24,15 +22,13 @@ const UserCard = ({ user }) => {
                         )
                             .toString(36)
                             .substring(7)}.svg`}
-                        className="rounded-circle shadow-1-strong me-3"
-                        alt="avatar"
-                        width="65"
-                        height="65"
+                        className="rounded-circle"
+                        width="150"
                     />
                     <div className="mt-3">
                         <h4>{user.name}</h4>
                         <p className="text-secondary mb-1">
-                            {_.get(user, "profession.name")}
+                            {user.profession.name}
                         </p>
                         <div className="text-muted">
                             <i

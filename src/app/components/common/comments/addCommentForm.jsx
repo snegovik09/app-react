@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import API from "../../../api";
 import SelectField from "../form/selectField";
 import TextAreaField from "../form/textAreaField";
@@ -24,13 +24,13 @@ const AddCommentForm = ({ onSubmit }) => {
         },
         content: {
             isRequired: {
-                message: "Сообщение не может быть пустымч"
+                message: "Сообщение не может быть пустым"
             }
         }
     };
+
     const validate = () => {
         const errors = validator(data, validatorConfig);
-
         setErrors(errors);
         return Object.keys(errors).length === 0;
     };
@@ -51,19 +51,19 @@ const AddCommentForm = ({ onSubmit }) => {
     const arrayOfUsers =
         users &&
         Object.keys(users).map((userId) => ({
-            name: users[userId].name,
-            _id: users[userId]._id
+            label: users[userId].name,
+            value: users[userId]._id
         }));
     return (
         <div>
             <h2>New comment</h2>
             <form onSubmit={handleSubmit}>
                 <SelectField
-                    defaultOption="Выберите пользователя"
-                    value={data.userId}
                     onChange={handleChange}
-                    name="userId"
                     options={arrayOfUsers}
+                    name="userId"
+                    value={data.userId}
+                    defaultOption="Выберите пользователя"
                     error={errors.userId}
                 />
                 <TextAreaField
@@ -80,7 +80,6 @@ const AddCommentForm = ({ onSubmit }) => {
         </div>
     );
 };
-
 AddCommentForm.propTypes = {
     onSubmit: PropTypes.func
 };
